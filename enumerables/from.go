@@ -98,24 +98,24 @@ func (this *ptrEnumerableFromMap[T_Key, T_Value]) getAction() *actionDelegate[cm
 	return actionDelegate
 }
 
-func EnumerableFromSlice[T any](slice *[]T) Enumerable[T] {
+func FromSlice[T any](slice *[]T) Enumerable[T] {
 	return &enumerableFromSlice[T]{Input: slice}
 }
 
-func PtrEnumerableFromSlice[T any](slice *[]T) Enumerable[*T] {
+func PointersFromSlice[T any](slice *[]T) Enumerable[*T] {
 	return &ptrEnumerableFromSlice[T]{Input: slice}
 }
 
-func EnumerableFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Enumerable[cmn.KeyValuePair[T_Key, T_Value]] {
+func FromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Enumerable[cmn.KeyValuePair[T_Key, T_Value]] {
 	return &enumerableFromMap[T_Key, T_Value]{Input: input}
 }
 
-func PtrEnumerableFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Enumerable[cmn.KeyValuePair[T_Key, *T_Value]] {
+func PointersFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Enumerable[cmn.KeyValuePair[T_Key, *T_Value]] {
 	//TODO - this does work consistently
 	// it's probably wrong to address map vals
 	// is this even useful?
 
-	x := EnumerableFromMap(input)
+	x := FromMap(input)
 	res := Select(x, func(kvp cmn.KeyValuePair[T_Key, T_Value]) cmn.KeyValuePair[T_Key, *T_Value] {
 		return cmn.KeyValuePair[T_Key, *T_Value]{Key: kvp.Key, Value: &kvp.Value}
 	})

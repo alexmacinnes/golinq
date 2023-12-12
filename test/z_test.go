@@ -67,20 +67,20 @@ func intRange(min int, max int) []int {
 	return nums
 }
 
-func TestSelect(t *testing.T) {
+func TestSelect_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, func(p Person) int { return p.Age })
 	x3 := enm.Select(x2, func(i int) int { return 0 - i })
 
-	actual1 := enm.EnumerableToSlice(x3)
+	actual1 := enm.ToSlice(x3)
 	expected1 := []int{-23}
 	assertResult(t, expected1, actual1)
 
 	p = append(p, Person{"Zane", 20})
 
-	actual2 := enm.EnumerableToSlice(x3)
+	actual2 := enm.ToSlice(x3)
 	expected2 := []int{-23, -20}
 	assertResult(t, expected2, actual2)
 }
@@ -88,28 +88,28 @@ func TestSelect(t *testing.T) {
 func TestSelect_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, func(p Person) int { return p.Age })
 	x3 := itr.Select(x2, func(i int) int { return 0 - i })
 
-	actual1 := itr.IteratorToSlice(x3)
+	actual1 := itr.ToSlice(x3)
 	expected1 := []int{-23}
 	assertResult(t, expected1, actual1)
 
 	p = append(p, Person{"Zane", 20})
 
-	actual2 := itr.IteratorToSlice(x3)
+	actual2 := itr.ToSlice(x3)
 	expected2 := []int{-23, -20}
 	assertResult(t, expected2, actual2)
 }
 
-func TestWhereEmpty(t *testing.T) {
+func TestWhereEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Where(x1, func(p Person) bool { return p.Age > 40 })
 	x3 := enm.Select(x2, personName)
-	where := enm.EnumerableToSlice(x3)
+	where := enm.ToSlice(x3)
 
 	assertResult(t, []string{}, where)
 }
@@ -117,21 +117,21 @@ func TestWhereEmpty(t *testing.T) {
 func TestWhereEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 40 })
 	x3 := itr.Select(x2, personName)
-	where := itr.IteratorToSlice(x3)
+	where := itr.ToSlice(x3)
 
 	assertResult(t, []string{}, where)
 }
 
-func TestWhere(t *testing.T) {
+func TestWhere_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Where(x1, func(p Person) bool { return p.Age > 30 })
 	x3 := enm.Select(x2, personName)
-	where := enm.EnumerableToSlice(x3)
+	where := enm.ToSlice(x3)
 
 	assertResult(t, []string{"Lucy", "Zack", "Rach"}, where)
 }
@@ -139,18 +139,18 @@ func TestWhere(t *testing.T) {
 func TestWhere_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 30 })
 	x3 := itr.Select(x2, personName)
-	where := itr.IteratorToSlice(x3)
+	where := itr.ToSlice(x3)
 
 	assertResult(t, []string{"Lucy", "Zack", "Rach"}, where)
 }
 
-func TestAnyFalse(t *testing.T) {
+func TestAnyFalse_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	actual := enm.Any(x1)
 
 	assertResult(t, false, actual)
@@ -159,17 +159,17 @@ func TestAnyFalse(t *testing.T) {
 func TestAnyFalse_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	actual := itr.Any(x1)
 
 	assertResult(t, false, actual)
 }
 
-func TestAnyTrue(t *testing.T) {
+func TestAnyTrue_Enm(t *testing.T) {
 	nums := intRange(1, 10000)
 
 	numsProcessed := 0
-	x1 := enm.EnumerableFromSlice(&nums)
+	x1 := enm.FromSlice(&nums)
 	x2 := enm.Select(x1, func(x int) int {
 		numsProcessed++
 		return x
@@ -188,7 +188,7 @@ func TestAnyTrue_Itr(t *testing.T) {
 	nums := intRange(1, 10000)
 
 	numsProcessed := 0
-	x1 := itr.IteratorFromSlice(&nums)
+	x1 := itr.FromSlice(&nums)
 	x2 := itr.Select(x1, func(x int) int {
 		numsProcessed++
 		return x
@@ -203,10 +203,10 @@ func TestAnyTrue_Itr(t *testing.T) {
 	}
 }
 
-func TestAllEmpty(t *testing.T) {
+func TestAllEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	actual := enm.All(x1, func(p Person) bool { return p.Age > 1000 })
 
 	assertResult(t, true, actual) // always true on empty input
@@ -215,16 +215,16 @@ func TestAllEmpty(t *testing.T) {
 func TestAllEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	actual := itr.All(x1, func(p Person) bool { return p.Age > 1000 })
 
 	assertResult(t, true, actual) // always true on empty input
 }
 
-func TestAllTrue(t *testing.T) {
+func TestAllTrue_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	actual := enm.All(x1, func(p Person) bool { return p.Age > 0 })
 
 	assertResult(t, true, actual)
@@ -233,16 +233,16 @@ func TestAllTrue(t *testing.T) {
 func TestAllTrue_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	actual := itr.All(x1, func(p Person) bool { return p.Age > 0 })
 
 	assertResult(t, true, actual)
 }
 
-func TestAllFalse(t *testing.T) {
+func TestAllFalse_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	actual := enm.All(x1, func(p Person) bool { return p.Age > 21 })
 
 	assertResult(t, false, actual)
@@ -251,16 +251,16 @@ func TestAllFalse(t *testing.T) {
 func TestAllFalse_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	actual := itr.All(x1, func(p Person) bool { return p.Age > 21 })
 
 	assertResult(t, false, actual)
 }
 
-func TestMaxEmpty(t *testing.T) {
+func TestMaxEmpty_Enm(t *testing.T) {
 	nums := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&nums)
+	x1 := enm.FromSlice(&nums)
 	x2 := enm.Select(x1, personAge)
 	_, ok := enm.Max(x2)
 
@@ -270,17 +270,17 @@ func TestMaxEmpty(t *testing.T) {
 func TestMaxEmpty_Itr(t *testing.T) {
 	nums := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&nums)
+	x1 := itr.FromSlice(&nums)
 	x2 := itr.Select(x1, personAge)
 	_, ok := itr.Max(x2)
 
 	assertResult(t, false, ok)
 }
 
-func TestMaxOneItem(t *testing.T) {
+func TestMaxOneItem_Enm(t *testing.T) {
 	nums := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&nums)
+	x1 := enm.FromSlice(&nums)
 	x2 := enm.Select(x1, personAge)
 	max, ok := enm.Max(x2)
 
@@ -291,7 +291,7 @@ func TestMaxOneItem(t *testing.T) {
 func TestMaxOneItem_Itr(t *testing.T) {
 	nums := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&nums)
+	x1 := itr.FromSlice(&nums)
 	x2 := itr.Select(x1, personAge)
 	max, ok := itr.Max(x2)
 
@@ -299,10 +299,10 @@ func TestMaxOneItem_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestMaxString(t *testing.T) {
+func TestMaxString_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	max, ok := enm.Max(x2)
 
@@ -313,7 +313,7 @@ func TestMaxString(t *testing.T) {
 func TestMaxString_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	max, ok := itr.Max(x2)
 
@@ -321,10 +321,10 @@ func TestMaxString_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestMinEmpty(t *testing.T) {
+func TestMinEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	_, ok := enm.Min(x2)
 
@@ -334,17 +334,17 @@ func TestMinEmpty(t *testing.T) {
 func TestMinEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	_, ok := itr.Min(x2)
 
 	assertResult(t, false, ok)
 }
 
-func TestMinOneItem(t *testing.T) {
+func TestMinOneItem_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	min, ok := enm.Min(x2)
 
@@ -355,7 +355,7 @@ func TestMinOneItem(t *testing.T) {
 func TestMinOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	min, ok := itr.Min(x2)
 
@@ -363,10 +363,10 @@ func TestMinOneItem_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestMinString(t *testing.T) {
+func TestMinString_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	min, ok := enm.Min(x2)
 
@@ -377,7 +377,7 @@ func TestMinString(t *testing.T) {
 func TestMinString_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	min, ok := itr.Min(x2)
 
@@ -385,10 +385,10 @@ func TestMinString_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestAvgEmpty(t *testing.T) {
+func TestAvgEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	_, ok := enm.Avg(x2)
 
@@ -398,17 +398,17 @@ func TestAvgEmpty(t *testing.T) {
 func TestAvgEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	_, ok := itr.Avg(x2)
 
 	assertResult(t, false, ok)
 }
 
-func TestAvgOneItem(t *testing.T) {
+func TestAvgOneItem_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	avg, ok := enm.Avg(x2)
 
@@ -419,7 +419,7 @@ func TestAvgOneItem(t *testing.T) {
 func TestAvgOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	avg, ok := itr.Avg(x2)
 
@@ -427,10 +427,10 @@ func TestAvgOneItem_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestAvgManyItems(t *testing.T) {
+func TestAvgManyItems_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	avg, ok := enm.Avg(x2)
 
@@ -441,7 +441,7 @@ func TestAvgManyItems(t *testing.T) {
 func TestAvgManyItems_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	avg, ok := itr.Avg(x2)
 
@@ -449,10 +449,10 @@ func TestAvgManyItems_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestCountEmpty(t *testing.T) {
+func TestCountEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	count := enm.Count(x2)
 
@@ -462,17 +462,17 @@ func TestCountEmpty(t *testing.T) {
 func TestCountEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	count := itr.Count(x2)
 
 	assertResult(t, 0, count)
 }
 
-func TestCountOneItem(t *testing.T) {
+func TestCountOneItem_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	count := enm.Count(x2)
 
@@ -482,17 +482,17 @@ func TestCountOneItem(t *testing.T) {
 func TestCountOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	count := itr.Count(x2)
 
 	assertResult(t, 1, count)
 }
 
-func TestCount5(t *testing.T) {
+func TestCount5_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	count := enm.Count(x2)
 
@@ -502,17 +502,17 @@ func TestCount5(t *testing.T) {
 func TestCount5_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	count := itr.Count(x2)
 
 	assertResult(t, 5, count)
 }
 
-func TestSumEmpty(t *testing.T) {
+func TestSumEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	count := enm.Count(x2)
 
@@ -522,17 +522,17 @@ func TestSumEmpty(t *testing.T) {
 func TestSumEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	count := itr.Count(x2)
 
 	assertResult(t, 0, count)
 }
 
-func TestSumOneItem(t *testing.T) {
+func TestSumOneItem_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	sum := enm.Sum(x2)
 
@@ -542,17 +542,17 @@ func TestSumOneItem(t *testing.T) {
 func TestSumOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	sum := itr.Sum(x2)
 
 	assertResult(t, 23, sum)
 }
 
-func TestSum5(t *testing.T) {
+func TestSum5_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	sum := enm.Sum(x2)
 
@@ -562,17 +562,17 @@ func TestSum5(t *testing.T) {
 func TestSum5_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	sum := itr.Sum(x2)
 
 	assertResult(t, 149, sum)
 }
 
-func TestSumFiltered(t *testing.T) {
+func TestSumFiltered_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Where(x1, func(p Person) bool { return p.Age > 30 })
 	x3 := enm.Select(x2, personAge)
 	sum := enm.Sum(x3)
@@ -583,7 +583,7 @@ func TestSumFiltered(t *testing.T) {
 func TestSumFiltered_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 30 })
 	x3 := itr.Select(x2, personAge)
 	sum := itr.Sum(x3)
@@ -591,10 +591,10 @@ func TestSumFiltered_Itr(t *testing.T) {
 	assertResult(t, 107, sum)
 }
 
-func TestAccumulateEmpty(t *testing.T) {
+func TestAccumulateEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	accum := enm.Accumulate(x1, 99, func(prior int, p Person) int { return prior + p.Age })
 
 	assertResult(t, 99, accum)
@@ -603,16 +603,16 @@ func TestAccumulateEmpty(t *testing.T) {
 func TestAccumulateEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	accum := itr.Accumulate(x1, 99, func(prior int, p Person) int { return prior + p.Age })
 
 	assertResult(t, 99, accum)
 }
 
-func TestAccumulateManyInts(t *testing.T) {
+func TestAccumulateManyInts_Enm(t *testing.T) {
 	nums := intRange(2, 4)
 
-	x1 := enm.EnumerableFromSlice(&nums)
+	x1 := enm.FromSlice(&nums)
 	accum := enm.Accumulate(x1, -100, func(prior int, item int) int { return prior * item })
 
 	assertResult(t, -2400, accum) // -100 * 2 * 3 * 4
@@ -621,16 +621,16 @@ func TestAccumulateManyInts(t *testing.T) {
 func TestAccumulateManyInts_Itr(t *testing.T) {
 	nums := intRange(2, 4)
 
-	x1 := itr.IteratorFromSlice(&nums)
+	x1 := itr.FromSlice(&nums)
 	accum := itr.Accumulate(x1, -100, func(prior int, item int) int { return prior * item })
 
 	assertResult(t, -2400, accum) // -100 * 2 * 3 * 4
 }
 
-func TestAccumulateManyStrings(t *testing.T) {
+func TestAccumulateManyStrings_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Where(x1, func(p Person) bool { return p.Age < 30 })
 	accum := enm.Accumulate(x2, "PeopleUnder30:", func(prior string, p Person) string { return prior + p.Name })
 
@@ -640,17 +640,17 @@ func TestAccumulateManyStrings(t *testing.T) {
 func TestAccumulateManyStrings_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Where(x1, func(p Person) bool { return p.Age < 30 })
 	accum := itr.Accumulate(x2, "PeopleUnder30:", func(prior string, p Person) string { return prior + p.Name })
 
 	assertResult(t, "PeopleUnder30:JamesAbi", accum) // -100 * 2 * 3 * 4
 }
 
-func TestContainsEmpty(t *testing.T) {
+func TestContainsEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	contains := enm.Contains(x2, 99)
 
@@ -660,17 +660,17 @@ func TestContainsEmpty(t *testing.T) {
 func TestContainsEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	contains := itr.Contains(x2, 99)
 
 	assertResult(t, false, contains)
 }
 
-func TestContainsMany(t *testing.T) {
+func TestContainsMany_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	contains999 := enm.Contains(x2, 999)
 	contains23 := enm.Contains(x2, 23)
@@ -682,7 +682,7 @@ func TestContainsMany(t *testing.T) {
 func TestContainsMany_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	contains999 := itr.Contains(x2, 999)
 	contains23 := itr.Contains(x2, 23)
@@ -691,10 +691,10 @@ func TestContainsMany_Itr(t *testing.T) {
 	assertResult(t, true, contains23)
 }
 
-func TestElementAt(t *testing.T) {
+func TestElementAt_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	element0, ok0 := enm.ElementAt(x2, 0)
 	element2, ok2 := enm.ElementAt(x2, 2)
@@ -715,7 +715,7 @@ func TestElementAt(t *testing.T) {
 func TestElementAt_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	element0, ok0 := itr.ElementAt(x2, 0)
 	element2, ok2 := itr.ElementAt(x2, 2)
@@ -733,10 +733,10 @@ func TestElementAt_Itr(t *testing.T) {
 	assertResult(t, "", element5)
 }
 
-func TestFirstEmpty(t *testing.T) {
+func TestFirstEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.First(x2)
 
@@ -747,7 +747,7 @@ func TestFirstEmpty(t *testing.T) {
 func TestFirstEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.First(x2)
 
@@ -755,10 +755,10 @@ func TestFirstEmpty_Itr(t *testing.T) {
 	assertResult(t, false, ok)
 }
 
-func TestFirst(t *testing.T) {
+func TestFirst_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.First(x2)
 
@@ -769,7 +769,7 @@ func TestFirst(t *testing.T) {
 func TestFirst_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.First(x2)
 
@@ -777,10 +777,10 @@ func TestFirst_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestFirstOrDefaultEmpty(t *testing.T) {
+func TestFirstOrDefaultEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first := enm.FirstOrDefault(x2)
 
@@ -790,17 +790,17 @@ func TestFirstOrDefaultEmpty(t *testing.T) {
 func TestFirstOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first := itr.FirstOrDefault(x2)
 
 	assertResult(t, "", first)
 }
 
-func TestFirstOrDefault(t *testing.T) {
+func TestFirstOrDefault_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first := enm.FirstOrDefault(x2)
 
@@ -810,17 +810,17 @@ func TestFirstOrDefault(t *testing.T) {
 func TestFirstOrDefault_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first := itr.FirstOrDefault(x2)
 
 	assertResult(t, "James", first)
 }
 
-func TestSingleEmpty(t *testing.T) {
+func TestSingleEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.Single(x2)
 
@@ -831,7 +831,7 @@ func TestSingleEmpty(t *testing.T) {
 func TestSingleEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.Single(x2)
 
@@ -839,10 +839,10 @@ func TestSingleEmpty_Itr(t *testing.T) {
 	assertResult(t, false, ok)
 }
 
-func TestSingle(t *testing.T) {
+func TestSingle_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.Single(x2)
 
@@ -853,7 +853,7 @@ func TestSingle(t *testing.T) {
 func TestSingle_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.Single(x2)
 
@@ -861,10 +861,10 @@ func TestSingle_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestSingleMany(t *testing.T) {
+func TestSingleMany_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.Single(x2)
 
@@ -875,7 +875,7 @@ func TestSingleMany(t *testing.T) {
 func TestSingleMany_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.Single(x2)
 
@@ -883,10 +883,10 @@ func TestSingleMany_Itr(t *testing.T) {
 	assertResult(t, false, ok)
 }
 
-func TestSingleOrDefaultEmpty(t *testing.T) {
+func TestSingleOrDefaultEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.SingleOrDefault(x2)
 
@@ -897,7 +897,7 @@ func TestSingleOrDefaultEmpty(t *testing.T) {
 func TestSingleOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.SingleOrDefault(x2)
 
@@ -905,10 +905,10 @@ func TestSingleOrDefaultEmpty_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestSingleOrDefault(t *testing.T) {
+func TestSingleOrDefault_Enm(t *testing.T) {
 	p := personSlice1()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.SingleOrDefault(x2)
 
@@ -919,7 +919,7 @@ func TestSingleOrDefault(t *testing.T) {
 func TestSingleOrDefault_Itr(t *testing.T) {
 	p := personSlice1()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.SingleOrDefault(x2)
 
@@ -927,10 +927,10 @@ func TestSingleOrDefault_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestSingleOrDefaultMany(t *testing.T) {
+func TestSingleOrDefaultMany_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.Single(x2)
 
@@ -941,7 +941,7 @@ func TestSingleOrDefaultMany(t *testing.T) {
 func TestSingleOrDefaultMany_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	first, ok := itr.Single(x2)
 
@@ -949,10 +949,10 @@ func TestSingleOrDefaultMany_Itr(t *testing.T) {
 	assertResult(t, false, ok)
 }
 
-func TestLastEmpty(t *testing.T) {
+func TestLastEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	last, ok := enm.Last(x2)
 
@@ -963,7 +963,7 @@ func TestLastEmpty(t *testing.T) {
 func TestLastEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	last, ok := itr.Last(x2)
 
@@ -971,10 +971,10 @@ func TestLastEmpty_Itr(t *testing.T) {
 	assertResult(t, false, ok)
 }
 
-func TestLast(t *testing.T) {
+func TestLast_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	first, ok := enm.Last(x2)
 
@@ -985,7 +985,7 @@ func TestLast(t *testing.T) {
 func TestLast_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	last, ok := itr.Last(x2)
 
@@ -993,10 +993,10 @@ func TestLast_Itr(t *testing.T) {
 	assertResult(t, true, ok)
 }
 
-func TestLastOrDefaultEmpty(t *testing.T) {
+func TestLastOrDefaultEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	last := enm.LastOrDefault(x2)
 
@@ -1006,17 +1006,17 @@ func TestLastOrDefaultEmpty(t *testing.T) {
 func TestLastOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	last := itr.LastOrDefault(x2)
 
 	assertResult(t, "", last)
 }
 
-func TestLastOrDefault(t *testing.T) {
+func TestLastOrDefault_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	last := enm.LastOrDefault(x2)
 
@@ -1026,20 +1026,20 @@ func TestLastOrDefault(t *testing.T) {
 func TestLastOrDefault_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	last := itr.LastOrDefault(x2)
 
 	assertResult(t, "Rach", last)
 }
 
-func TestChunkEmpty(t *testing.T) {
+func TestChunkEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	x3 := enm.Chunk(x2, 3)
-	chunks := enm.EnumerableToSlice(x3)
+	chunks := enm.ToSlice(x3)
 
 	assertResult(t, [][]string{}, chunks)
 }
@@ -1047,21 +1047,21 @@ func TestChunkEmpty(t *testing.T) {
 func TestChunkEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	x3 := itr.Chunk(x2, 3)
-	chunks := itr.IteratorToSlice(x3)
+	chunks := itr.ToSlice(x3)
 
 	assertResult(t, [][]string{}, chunks)
 }
 
-func TestChunk(t *testing.T) {
+func TestChunk_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personName)
 	x3 := enm.Chunk(x2, 3)
-	chunks := enm.EnumerableToSlice(x3)
+	chunks := enm.ToSlice(x3)
 
 	expected := [][]string{
 		{"James", "Lucy", "Zack"},
@@ -1073,10 +1073,10 @@ func TestChunk(t *testing.T) {
 func TestChunk_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personName)
 	x3 := itr.Chunk(x2, 3)
-	chunks := itr.IteratorToSlice(x3)
+	chunks := itr.ToSlice(x3)
 
 	expected := [][]string{
 		{"James", "Lucy", "Zack"},
@@ -1085,13 +1085,13 @@ func TestChunk_Itr(t *testing.T) {
 	assertResult(t, expected, chunks)
 }
 
-func TestDistinctEmpty(t *testing.T) {
+func TestDistinctEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	x3 := enm.Distinct(x2)
-	distinct := enm.EnumerableToSlice(x3)
+	distinct := enm.ToSlice(x3)
 
 	assertResult(t, []int{}, distinct)
 }
@@ -1099,21 +1099,21 @@ func TestDistinctEmpty(t *testing.T) {
 func TestDistinctEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	x3 := itr.Distinct(x2)
-	distinct := itr.IteratorToSlice(x3)
+	distinct := itr.ToSlice(x3)
 
 	assertResult(t, []int{}, distinct)
 }
 
-func TestDistinct(t *testing.T) {
+func TestDistinct_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
+	x1 := enm.FromSlice(&p)
 	x2 := enm.Select(x1, personAge)
 	x3 := enm.Distinct(x2)
-	distinct := enm.EnumerableToSlice(x3)
+	distinct := enm.ToSlice(x3)
 
 	assertResult(t, []int{23, 33, 41, 19}, distinct)
 }
@@ -1121,19 +1121,19 @@ func TestDistinct(t *testing.T) {
 func TestDistinct_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
+	x1 := itr.FromSlice(&p)
 	x2 := itr.Select(x1, personAge)
 	x3 := itr.Distinct(x2)
-	distinct := itr.IteratorToSlice(x3)
+	distinct := itr.ToSlice(x3)
 
 	assertResult(t, []int{23, 33, 41, 19}, distinct)
 }
 
-func TestEnumerableToMap(t *testing.T) {
+func TestToMap_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
-	mapped, ok := enm.EnumerableToMap(x1,
+	x1 := enm.FromSlice(&p)
+	mapped, ok := enm.ToMap(x1,
 		func(p Person) string { return strings.ToUpper(p.Name) },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1141,11 +1141,11 @@ func TestEnumerableToMap(t *testing.T) {
 	assertResult(t, mapped, map[string]int{"JAMES": 230, "LUCY": 330, "ZACK": 410, "ABI": 190, "RACH": 330})
 }
 
-func TestIteratorToMap(t *testing.T) {
+func TestToMap_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
-	mapped, ok := itr.IteratorToMap(x1,
+	x1 := itr.FromSlice(&p)
+	mapped, ok := itr.ToMap(x1,
 		func(p Person) string { return strings.ToUpper(p.Name) },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1153,11 +1153,11 @@ func TestIteratorToMap(t *testing.T) {
 	assertResult(t, mapped, map[string]int{"JAMES": 230, "LUCY": 330, "ZACK": 410, "ABI": 190, "RACH": 330})
 }
 
-func TestEnumerableToDictionaryEmpty(t *testing.T) {
+func TestToMapEmpty_Enm(t *testing.T) {
 	p := personSlice0()
 
-	x1 := enm.EnumerableFromSlice(&p)
-	mapped, ok := enm.EnumerableToMap(x1,
+	x1 := enm.FromSlice(&p)
+	mapped, ok := enm.ToMap(x1,
 		func(p Person) string { return strings.ToUpper(p.Name) },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1165,11 +1165,11 @@ func TestEnumerableToDictionaryEmpty(t *testing.T) {
 	assertResult(t, len(mapped), 0)
 }
 
-func TestIteratorToDictionaryEmpty(t *testing.T) {
+func TestToMapEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
-	x1 := itr.IteratorFromSlice(&p)
-	mapped, ok := itr.IteratorToMap(x1,
+	x1 := itr.FromSlice(&p)
+	mapped, ok := itr.ToMap(x1,
 		func(p Person) string { return strings.ToUpper(p.Name) },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1177,11 +1177,11 @@ func TestIteratorToDictionaryEmpty(t *testing.T) {
 	assertResult(t, len(mapped), 0)
 }
 
-func TestEnumerableToDictionaryDuplicateKey(t *testing.T) {
+func TestToMapDuplicateKey_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.EnumerableFromSlice(&p)
-	mapped, ok := enm.EnumerableToMap(x1,
+	x1 := enm.FromSlice(&p)
+	mapped, ok := enm.ToMap(x1,
 		func(p Person) string { return "DUPLICATE" },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1189,11 +1189,11 @@ func TestEnumerableToDictionaryDuplicateKey(t *testing.T) {
 	assertResult(t, mapped, nil)
 }
 
-func TestIteratorToDictionaryDuplicateKey(t *testing.T) {
+func TestToMapDuplicateKey_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.IteratorFromSlice(&p)
-	mapped, ok := itr.IteratorToMap(x1,
+	x1 := itr.FromSlice(&p)
+	mapped, ok := itr.ToMap(x1,
 		func(p Person) string { return "DUPLICATE" },
 		func(p Person) int { return p.Age * 10 })
 
@@ -1201,30 +1201,30 @@ func TestIteratorToDictionaryDuplicateKey(t *testing.T) {
 	assertResult(t, mapped, nil)
 }
 
-func TestPtrEnumerableFromSlice(t *testing.T) {
+func TestPointersFromSlice_Enm(t *testing.T) {
 	p := personSlice5()
 
-	x1 := enm.PtrEnumerableFromSlice(&p)
+	x1 := enm.PointersFromSlice(&p)
 	x2 := enm.Select(x1, func(ptr *Person) int { return (*ptr).Age })
 	maxAge, _ := enm.Max(x2)
 
 	assertResult(t, maxAge, 41)
 }
 
-func TestPtrIteratorFromSlice(t *testing.T) {
+func TestPointersFromSlice_Itr(t *testing.T) {
 	p := personSlice5()
 
-	x1 := itr.PtrIteratorFromSlice(&p)
+	x1 := itr.PointersFromSlice(&p)
 	x2 := itr.Select(x1, func(ptr *Person) int { return (*ptr).Age })
 	maxAge, _ := itr.Max(x2)
 
 	assertResult(t, maxAge, 41)
 }
 
-func TestEnumerableFromMap(t *testing.T) {
+func TestFromMap_Enm(t *testing.T) {
 	p := personMap5()
 
-	x1 := enm.EnumerableFromMap(&p)
+	x1 := enm.FromMap(&p)
 	x2 := enm.Where(x1, func(kvp cmn.KeyValuePair[string, Person]) bool { return kvp.Key == "Abi" })
 	x3 := enm.Select(x2, func(kvp cmn.KeyValuePair[string, Person]) int { return kvp.Value.Age })
 	abiAge, _ := enm.Single(x3)
@@ -1232,10 +1232,10 @@ func TestEnumerableFromMap(t *testing.T) {
 	assertResult(t, abiAge, 19)
 }
 
-func TestIteratorFromMap(t *testing.T) {
+func TestFromMap_Itr(t *testing.T) {
 	p := personMap5()
 
-	x1 := itr.IteratorFromMap(&p)
+	x1 := itr.FromMap(&p)
 	x2 := itr.Where(x1, func(kvp cmn.KeyValuePair[string, Person]) bool { return kvp.Key == "Abi" })
 	x3 := itr.Select(x2, func(kvp cmn.KeyValuePair[string, Person]) int { return kvp.Value.Age })
 	abiAge, _ := itr.Single(x3)
@@ -1243,29 +1243,29 @@ func TestIteratorFromMap(t *testing.T) {
 	assertResult(t, abiAge, 19)
 }
 
-func TestEnumerableFromMapEmpty(t *testing.T) {
+func TestFromMapEmpty_Enm(t *testing.T) {
 	p := personMap0()
 
-	x1 := enm.EnumerableFromMap(&p)
-	slice := enm.EnumerableToSlice(x1)
+	x1 := enm.FromMap(&p)
+	slice := enm.ToSlice(x1)
 
 	assertResult(t, len(slice), 0)
 }
 
-func TestIteratorFromMapEmpty(t *testing.T) {
+func TestFromMapEmpty_Itr(t *testing.T) {
 	p := personMap0()
 
-	x1 := itr.IteratorFromMap(&p)
-	slice := itr.IteratorToSlice(x1)
+	x1 := itr.FromMap(&p)
+	slice := itr.ToSlice(x1)
 
 	assertResult(t, len(slice), 0)
 }
 
-func TestPtrEnumerableFromMap(t *testing.T) {
+func TestPointersFromMap_Enm(t *testing.T) {
 	//TODO - intermittent failures
 	p := personMap5()
 
-	x1 := enm.PtrEnumerableFromMap(&p)
+	x1 := enm.PointersFromMap(&p)
 	x2 := enm.Where(x1, func(kvp cmn.KeyValuePair[string, *Person]) bool { return kvp.Key == "Abi" })
 	x3 := enm.Select(x2, func(kvp cmn.KeyValuePair[string, *Person]) int { return (*kvp.Value).Age })
 	abiAge, _ := enm.Single(x3)
@@ -1273,11 +1273,11 @@ func TestPtrEnumerableFromMap(t *testing.T) {
 	assertResult(t, abiAge, 19)
 }
 
-func TestPtrIteratorFromMap(t *testing.T) {
+func TestPointersFromMap_Itr(t *testing.T) {
 	//TODO - intermittent failures
 	p := personMap5()
 
-	x1 := itr.PtrIteratorFromMap(&p)
+	x1 := itr.PointersFromMap(&p)
 	x2 := itr.Where(x1, func(kvp cmn.KeyValuePair[string, *Person]) bool { return kvp.Key == "Abi" })
 	x3 := itr.Select(x2, func(kvp cmn.KeyValuePair[string, *Person]) int { return (*kvp.Value).Age })
 	abiAge, _ := itr.Single(x3)
@@ -1285,20 +1285,20 @@ func TestPtrIteratorFromMap(t *testing.T) {
 	assertResult(t, abiAge, 19)
 }
 
-func TestPtrEnumerableFromMapEmpty(t *testing.T) {
+func TestPointersFromMapEmpty_Enm(t *testing.T) {
 	p := personMap0()
 
-	x1 := enm.PtrEnumerableFromMap(&p)
-	slice := enm.EnumerableToSlice(x1)
+	x1 := enm.PointersFromMap(&p)
+	slice := enm.ToSlice(x1)
 
 	assertResult(t, len(slice), 0)
 }
 
-func TestPtrIteratorFromMapEmpty(t *testing.T) {
+func TestPointersFromMapEmpty_Itr(t *testing.T) {
 	p := personMap0()
 
-	x1 := itr.PtrIteratorFromMap(&p)
-	slice := itr.IteratorToSlice(x1)
+	x1 := itr.PointersFromMap(&p)
+	slice := itr.ToSlice(x1)
 
 	assertResult(t, len(slice), 0)
 }

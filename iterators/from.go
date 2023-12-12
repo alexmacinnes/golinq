@@ -107,25 +107,25 @@ func (x *itrFromChan[T]) Next() (T, bool) {
 }
 
 //Public
-func IteratorFromSlice[T any](slice *[]T) Iterator[T] {
+func FromSlice[T any](slice *[]T) Iterator[T] {
 	return &iteratorFromSlice[T]{
 		Input: slice,
 	}
 }
 
-func PtrIteratorFromSlice[T any](slice *[]T) Iterator[*T] {
+func PointersFromSlice[T any](slice *[]T) Iterator[*T] {
 	return &ptrIteratorFromSlice[T]{
 		Input: slice,
 	}
 }
 
-func IteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, T_Value]] {
+func FromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, T_Value]] {
 	return &iteratorFromMap[T_Key, T_Value]{
 		Input: input,
 	}
 }
 
-func PtrIteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, *T_Value]] {
+func PointersFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, *T_Value]] {
 	return &ptrIteratorFromMap[T_Key, T_Value]{
 		Input: input,
 	}
