@@ -31,7 +31,7 @@ func (x *iteratorWhere[T]) initItr() itr[T] {
 	}
 }
 
-func WhereItr[T any](inner Iterator[T], predicate func(T) bool) Iterator[T] {
+func Where[T any](inner Iterator[T], predicate func(T) bool) Iterator[T] {
 	return &iteratorWhere[T]{
 		Inner:     inner,
 		Predicate: predicate,

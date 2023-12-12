@@ -89,8 +89,8 @@ func TestSelect_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, func(p Person) int { return p.Age })
-	x3 := itr.SelectItr(x2, func(i int) int { return 0 - i })
+	x2 := itr.Select(x1, func(p Person) int { return p.Age })
+	x3 := itr.Select(x2, func(i int) int { return 0 - i })
 
 	actual1 := itr.IteratorToSlice(x3)
 	expected1 := []int{-23}
@@ -118,8 +118,8 @@ func TestWhereEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.WhereItr(x1, func(p Person) bool { return p.Age > 40 })
-	x3 := itr.SelectItr(x2, personName)
+	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 40 })
+	x3 := itr.Select(x2, personName)
 	where := itr.IteratorToSlice(x3)
 
 	assertResult(t, []string{}, where)
@@ -140,8 +140,8 @@ func TestWhere_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.WhereItr(x1, func(p Person) bool { return p.Age > 30 })
-	x3 := itr.SelectItr(x2, personName)
+	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 30 })
+	x3 := itr.Select(x2, personName)
 	where := itr.IteratorToSlice(x3)
 
 	assertResult(t, []string{"Lucy", "Zack", "Rach"}, where)
@@ -160,7 +160,7 @@ func TestAnyFalse_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	actual := itr.AnyItr(x1)
+	actual := itr.Any(x1)
 
 	assertResult(t, false, actual)
 }
@@ -189,11 +189,11 @@ func TestAnyTrue_Itr(t *testing.T) {
 
 	numsProcessed := 0
 	x1 := itr.IteratorFromSlice(&nums)
-	x2 := itr.SelectItr(x1, func(x int) int {
+	x2 := itr.Select(x1, func(x int) int {
 		numsProcessed++
 		return x
 	})
-	any := itr.AnyItr(x2)
+	any := itr.Any(x2)
 
 	assertResult(t, true, any)
 
@@ -216,7 +216,7 @@ func TestAllEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	actual := itr.AllItr(x1, func(p Person) bool { return p.Age > 1000 })
+	actual := itr.All(x1, func(p Person) bool { return p.Age > 1000 })
 
 	assertResult(t, true, actual) // always true on empty input
 }
@@ -234,7 +234,7 @@ func TestAllTrue_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	actual := itr.AllItr(x1, func(p Person) bool { return p.Age > 0 })
+	actual := itr.All(x1, func(p Person) bool { return p.Age > 0 })
 
 	assertResult(t, true, actual)
 }
@@ -252,7 +252,7 @@ func TestAllFalse_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	actual := itr.AllItr(x1, func(p Person) bool { return p.Age > 21 })
+	actual := itr.All(x1, func(p Person) bool { return p.Age > 21 })
 
 	assertResult(t, false, actual)
 }
@@ -271,8 +271,8 @@ func TestMaxEmpty_Itr(t *testing.T) {
 	nums := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&nums)
-	x2 := itr.SelectItr(x1, personAge)
-	_, ok := itr.MaxItr(x2)
+	x2 := itr.Select(x1, personAge)
+	_, ok := itr.Max(x2)
 
 	assertResult(t, false, ok)
 }
@@ -292,8 +292,8 @@ func TestMaxOneItem_Itr(t *testing.T) {
 	nums := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&nums)
-	x2 := itr.SelectItr(x1, personAge)
-	max, ok := itr.MaxItr(x2)
+	x2 := itr.Select(x1, personAge)
+	max, ok := itr.Max(x2)
 
 	assertResult(t, 23, max)
 	assertResult(t, true, ok)
@@ -314,8 +314,8 @@ func TestMaxString_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	max, ok := itr.MaxItr(x2)
+	x2 := itr.Select(x1, personName)
+	max, ok := itr.Max(x2)
 
 	assertResult(t, "Zack", max)
 	assertResult(t, true, ok)
@@ -335,8 +335,8 @@ func TestMinEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	_, ok := itr.MinItr(x2)
+	x2 := itr.Select(x1, personAge)
+	_, ok := itr.Min(x2)
 
 	assertResult(t, false, ok)
 }
@@ -356,8 +356,8 @@ func TestMinOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	min, ok := itr.MinItr(x2)
+	x2 := itr.Select(x1, personAge)
+	min, ok := itr.Min(x2)
 
 	assertResult(t, 23, min)
 	assertResult(t, true, ok)
@@ -378,8 +378,8 @@ func TestMinString_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	min, ok := itr.MinItr(x2)
+	x2 := itr.Select(x1, personName)
+	min, ok := itr.Min(x2)
 
 	assertResult(t, "Abi", min)
 	assertResult(t, true, ok)
@@ -399,8 +399,8 @@ func TestAvgEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	_, ok := itr.AvgItr(x2)
+	x2 := itr.Select(x1, personAge)
+	_, ok := itr.Avg(x2)
 
 	assertResult(t, false, ok)
 }
@@ -420,8 +420,8 @@ func TestAvgOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	avg, ok := itr.AvgItr(x2)
+	x2 := itr.Select(x1, personAge)
+	avg, ok := itr.Avg(x2)
 
 	assertResult(t, 23.0, avg)
 	assertResult(t, true, ok)
@@ -442,8 +442,8 @@ func TestAvgManyItems_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	avg, ok := itr.AvgItr(x2)
+	x2 := itr.Select(x1, personAge)
+	avg, ok := itr.Avg(x2)
 
 	assertResult(t, 29.8, avg)
 	assertResult(t, true, ok)
@@ -463,8 +463,8 @@ func TestCountEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	count := itr.CountItr(x2)
+	x2 := itr.Select(x1, personAge)
+	count := itr.Count(x2)
 
 	assertResult(t, 0, count)
 }
@@ -483,8 +483,8 @@ func TestCountOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	count := itr.CountItr(x2)
+	x2 := itr.Select(x1, personAge)
+	count := itr.Count(x2)
 
 	assertResult(t, 1, count)
 }
@@ -503,8 +503,8 @@ func TestCount5_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	count := itr.CountItr(x2)
+	x2 := itr.Select(x1, personAge)
+	count := itr.Count(x2)
 
 	assertResult(t, 5, count)
 }
@@ -523,8 +523,8 @@ func TestSumEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	count := itr.CountItr(x2)
+	x2 := itr.Select(x1, personAge)
+	count := itr.Count(x2)
 
 	assertResult(t, 0, count)
 }
@@ -543,8 +543,8 @@ func TestSumOneItem_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	sum := itr.SumItr(x2)
+	x2 := itr.Select(x1, personAge)
+	sum := itr.Sum(x2)
 
 	assertResult(t, 23, sum)
 }
@@ -563,8 +563,8 @@ func TestSum5_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	sum := itr.SumItr(x2)
+	x2 := itr.Select(x1, personAge)
+	sum := itr.Sum(x2)
 
 	assertResult(t, 149, sum)
 }
@@ -584,9 +584,9 @@ func TestSumFiltered_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.WhereItr(x1, func(p Person) bool { return p.Age > 30 })
-	x3 := itr.SelectItr(x2, personAge)
-	sum := itr.SumItr(x3)
+	x2 := itr.Where(x1, func(p Person) bool { return p.Age > 30 })
+	x3 := itr.Select(x2, personAge)
+	sum := itr.Sum(x3)
 
 	assertResult(t, 107, sum)
 }
@@ -604,7 +604,7 @@ func TestAccumulateEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	accum := itr.AccumulateItr(x1, 99, func(prior int, p Person) int { return prior + p.Age })
+	accum := itr.Accumulate(x1, 99, func(prior int, p Person) int { return prior + p.Age })
 
 	assertResult(t, 99, accum)
 }
@@ -622,7 +622,7 @@ func TestAccumulateManyInts_Itr(t *testing.T) {
 	nums := intRange(2, 4)
 
 	x1 := itr.IteratorFromSlice(&nums)
-	accum := itr.AccumulateItr(x1, -100, func(prior int, item int) int { return prior * item })
+	accum := itr.Accumulate(x1, -100, func(prior int, item int) int { return prior * item })
 
 	assertResult(t, -2400, accum) // -100 * 2 * 3 * 4
 }
@@ -641,8 +641,8 @@ func TestAccumulateManyStrings_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.WhereItr(x1, func(p Person) bool { return p.Age < 30 })
-	accum := itr.AccumulateItr(x2, "PeopleUnder30:", func(prior string, p Person) string { return prior + p.Name })
+	x2 := itr.Where(x1, func(p Person) bool { return p.Age < 30 })
+	accum := itr.Accumulate(x2, "PeopleUnder30:", func(prior string, p Person) string { return prior + p.Name })
 
 	assertResult(t, "PeopleUnder30:JamesAbi", accum) // -100 * 2 * 3 * 4
 }
@@ -661,8 +661,8 @@ func TestContainsEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	contains := itr.ContainsItr(x2, 99)
+	x2 := itr.Select(x1, personAge)
+	contains := itr.Contains(x2, 99)
 
 	assertResult(t, false, contains)
 }
@@ -683,9 +683,9 @@ func TestContainsMany_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	contains999 := itr.ContainsItr(x2, 999)
-	contains23 := itr.ContainsItr(x2, 23)
+	x2 := itr.Select(x1, personAge)
+	contains999 := itr.Contains(x2, 999)
+	contains23 := itr.Contains(x2, 23)
 
 	assertResult(t, false, contains999)
 	assertResult(t, true, contains23)
@@ -716,11 +716,11 @@ func TestElementAt_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	element0, ok0 := itr.ElementAtItr(x2, 0)
-	element2, ok2 := itr.ElementAtItr(x2, 2)
-	element4, ok4 := itr.ElementAtItr(x2, 4)
-	element5, ok5 := itr.ElementAtItr(x2, 5)
+	x2 := itr.Select(x1, personName)
+	element0, ok0 := itr.ElementAt(x2, 0)
+	element2, ok2 := itr.ElementAt(x2, 2)
+	element4, ok4 := itr.ElementAt(x2, 4)
+	element5, ok5 := itr.ElementAt(x2, 5)
 
 	assertResult(t, true, ok0)
 	assertResult(t, true, ok2)
@@ -748,8 +748,8 @@ func TestFirstEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.FirstItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.First(x2)
 
 	assertResult(t, "", first)
 	assertResult(t, false, ok)
@@ -770,8 +770,8 @@ func TestFirst_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.FirstItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.First(x2)
 
 	assertResult(t, "James", first)
 	assertResult(t, true, ok)
@@ -791,8 +791,8 @@ func TestFirstOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first := itr.FirstOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	first := itr.FirstOrDefault(x2)
 
 	assertResult(t, "", first)
 }
@@ -811,8 +811,8 @@ func TestFirstOrDefault_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first := itr.FirstOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	first := itr.FirstOrDefault(x2)
 
 	assertResult(t, "James", first)
 }
@@ -832,8 +832,8 @@ func TestSingleEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.Single(x2)
 
 	assertResult(t, "", first)
 	assertResult(t, false, ok)
@@ -854,8 +854,8 @@ func TestSingle_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.Single(x2)
 
 	assertResult(t, "James", first)
 	assertResult(t, true, ok)
@@ -876,8 +876,8 @@ func TestSingleMany_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.Single(x2)
 
 	assertResult(t, "", first)
 	assertResult(t, false, ok)
@@ -898,8 +898,8 @@ func TestSingleOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.SingleOrDefault(x2)
 
 	assertResult(t, "", first)
 	assertResult(t, true, ok)
@@ -920,8 +920,8 @@ func TestSingleOrDefault_Itr(t *testing.T) {
 	p := personSlice1()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.SingleOrDefault(x2)
 
 	assertResult(t, "James", first)
 	assertResult(t, true, ok)
@@ -942,8 +942,8 @@ func TestSingleOrDefaultMany_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	first, ok := itr.SingleItr(x2)
+	x2 := itr.Select(x1, personName)
+	first, ok := itr.Single(x2)
 
 	assertResult(t, "", first)
 	assertResult(t, false, ok)
@@ -964,8 +964,8 @@ func TestLastEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	last, ok := itr.LastItr(x2)
+	x2 := itr.Select(x1, personName)
+	last, ok := itr.Last(x2)
 
 	assertResult(t, "", last)
 	assertResult(t, false, ok)
@@ -986,8 +986,8 @@ func TestLast_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	last, ok := itr.LastItr(x2)
+	x2 := itr.Select(x1, personName)
+	last, ok := itr.Last(x2)
 
 	assertResult(t, "Rach", last)
 	assertResult(t, true, ok)
@@ -1007,8 +1007,8 @@ func TestLastOrDefaultEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	last := itr.LastOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	last := itr.LastOrDefault(x2)
 
 	assertResult(t, "", last)
 }
@@ -1027,8 +1027,8 @@ func TestLastOrDefault_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	last := itr.LastOrDefaultItr(x2)
+	x2 := itr.Select(x1, personName)
+	last := itr.LastOrDefault(x2)
 
 	assertResult(t, "Rach", last)
 }
@@ -1048,8 +1048,8 @@ func TestChunkEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	x3 := itr.ChunkItr(x2, 3)
+	x2 := itr.Select(x1, personName)
+	x3 := itr.Chunk(x2, 3)
 	chunks := itr.IteratorToSlice(x3)
 
 	assertResult(t, [][]string{}, chunks)
@@ -1074,8 +1074,8 @@ func TestChunk_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personName)
-	x3 := itr.ChunkItr(x2, 3)
+	x2 := itr.Select(x1, personName)
+	x3 := itr.Chunk(x2, 3)
 	chunks := itr.IteratorToSlice(x3)
 
 	expected := [][]string{
@@ -1100,8 +1100,8 @@ func TestDistinctEmpty_Itr(t *testing.T) {
 	p := personSlice0()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	x3 := itr.DistinctItr(x2)
+	x2 := itr.Select(x1, personAge)
+	x3 := itr.Distinct(x2)
 	distinct := itr.IteratorToSlice(x3)
 
 	assertResult(t, []int{}, distinct)
@@ -1122,8 +1122,8 @@ func TestDistinct_Itr(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.IteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, personAge)
-	x3 := itr.DistinctItr(x2)
+	x2 := itr.Select(x1, personAge)
+	x3 := itr.Distinct(x2)
 	distinct := itr.IteratorToSlice(x3)
 
 	assertResult(t, []int{23, 33, 41, 19}, distinct)
@@ -1215,8 +1215,8 @@ func TestPtrIteratorFromSlice(t *testing.T) {
 	p := personSlice5()
 
 	x1 := itr.PtrIteratorFromSlice(&p)
-	x2 := itr.SelectItr(x1, func(ptr *Person) int { return (*ptr).Age })
-	maxAge, _ := itr.MaxItr(x2)
+	x2 := itr.Select(x1, func(ptr *Person) int { return (*ptr).Age })
+	maxAge, _ := itr.Max(x2)
 
 	assertResult(t, maxAge, 41)
 }
@@ -1236,9 +1236,9 @@ func TestIteratorFromMap(t *testing.T) {
 	p := personMap5()
 
 	x1 := itr.IteratorFromMap(&p)
-	x2 := itr.WhereItr(x1, func(kvp cmn.KeyValuePair[string, Person]) bool { return kvp.Key == "Abi" })
-	x3 := itr.SelectItr(x2, func(kvp cmn.KeyValuePair[string, Person]) int { return kvp.Value.Age })
-	abiAge, _ := itr.SingleItr(x3)
+	x2 := itr.Where(x1, func(kvp cmn.KeyValuePair[string, Person]) bool { return kvp.Key == "Abi" })
+	x3 := itr.Select(x2, func(kvp cmn.KeyValuePair[string, Person]) int { return kvp.Value.Age })
+	abiAge, _ := itr.Single(x3)
 
 	assertResult(t, abiAge, 19)
 }
@@ -1278,9 +1278,9 @@ func TestPtrIteratorFromMap(t *testing.T) {
 	p := personMap5()
 
 	x1 := itr.PtrIteratorFromMap(&p)
-	x2 := itr.WhereItr(x1, func(kvp cmn.KeyValuePair[string, *Person]) bool { return kvp.Key == "Abi" })
-	x3 := itr.SelectItr(x2, func(kvp cmn.KeyValuePair[string, *Person]) int { return (*kvp.Value).Age })
-	abiAge, _ := itr.SingleItr(x3)
+	x2 := itr.Where(x1, func(kvp cmn.KeyValuePair[string, *Person]) bool { return kvp.Key == "Abi" })
+	x3 := itr.Select(x2, func(kvp cmn.KeyValuePair[string, *Person]) int { return (*kvp.Value).Age })
+	abiAge, _ := itr.Single(x3)
 
 	assertResult(t, abiAge, 19)
 }

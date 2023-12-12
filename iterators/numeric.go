@@ -2,7 +2,7 @@ package iterators
 
 import cmn "github.com/alexmacinnes/golinq/common"
 
-func MaxItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
+func Max[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	max, ok := itr.Next()
@@ -21,7 +21,7 @@ func MaxItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	}
 }
 
-func MinItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
+func Min[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	min, ok := itr.Next()
@@ -40,7 +40,7 @@ func MinItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	}
 }
 
-func AvgItr[T cmn.Numeric](src Iterator[T]) (float64, bool) {
+func Avg[T cmn.Numeric](src Iterator[T]) (float64, bool) {
 	itr := src.initItr()
 
 	var total float64 = 0
@@ -61,7 +61,7 @@ func AvgItr[T cmn.Numeric](src Iterator[T]) (float64, bool) {
 	return total / float64(count), true
 }
 
-func SumItr[T cmn.Numeric](src Iterator[T]) T {
+func Sum[T cmn.Numeric](src Iterator[T]) T {
 	itr := src.initItr()
 
 	var total T = 0
@@ -75,7 +75,7 @@ func SumItr[T cmn.Numeric](src Iterator[T]) T {
 	}
 }
 
-func CountItr[T any](src Iterator[T]) uint32 {
+func Count[T any](src Iterator[T]) uint32 {
 	itr := src.initItr()
 
 	count := uint32(0)
@@ -89,7 +89,7 @@ func CountItr[T any](src Iterator[T]) uint32 {
 	}
 }
 
-func AccumulateItr[TAccumulate any, TItem any](src Iterator[TItem], seed TAccumulate, accumulator func(TAccumulate, TItem) TAccumulate) TAccumulate {
+func Accumulate[TAccumulate any, TItem any](src Iterator[TItem], seed TAccumulate, accumulator func(TAccumulate, TItem) TAccumulate) TAccumulate {
 	itr := src.initItr()
 
 	result := seed

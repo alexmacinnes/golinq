@@ -1,12 +1,12 @@
 package iterators
 
-func AnyItr[T any](src Iterator[T]) bool {
+func Any[T any](src Iterator[T]) bool {
 	itr := src.initItr()
 	_, ok := itr.Next()
 	return ok
 }
 
-func AllItr[T any](src Iterator[T], predicate func(T) bool) bool {
+func All[T any](src Iterator[T], predicate func(T) bool) bool {
 	itr := src.initItr()
 
 	for {
@@ -21,7 +21,7 @@ func AllItr[T any](src Iterator[T], predicate func(T) bool) bool {
 	}
 }
 
-func ContainsItr[T comparable](src Iterator[T], item T) bool {
+func Contains[T comparable](src Iterator[T], item T) bool {
 	itr := src.initItr()
 
 	for {
@@ -35,7 +35,7 @@ func ContainsItr[T comparable](src Iterator[T], item T) bool {
 	}
 }
 
-func ElementAtItr[T any](src Iterator[T], index int) (T, bool) {
+func ElementAt[T any](src Iterator[T], index int) (T, bool) {
 	itr := src.initItr()
 	var result T
 	var ok bool
@@ -51,18 +51,18 @@ func ElementAtItr[T any](src Iterator[T], index int) (T, bool) {
 	return result, ok
 }
 
-func FirstItr[T any](src Iterator[T]) (T, bool) {
+func First[T any](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 	return itr.Next()
 }
 
-func FirstOrDefaultItr[T any](src Iterator[T]) T {
+func FirstOrDefault[T any](src Iterator[T]) T {
 	itr := src.initItr()
 	result, _ := itr.Next()
 	return result
 }
 
-func SingleItr[T any](src Iterator[T]) (T, bool) {
+func Single[T any](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	result, ok := itr.Next()
@@ -79,7 +79,7 @@ func SingleItr[T any](src Iterator[T]) (T, bool) {
 	return result, ok
 }
 
-func SingleOrDefaultItr[T any](src Iterator[T]) (T, bool) {
+func SingleOrDefault[T any](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	result, ok := itr.Next()
@@ -97,7 +97,7 @@ func SingleOrDefaultItr[T any](src Iterator[T]) (T, bool) {
 	return result, true
 }
 
-func LastItr[T any](src Iterator[T]) (T, bool) {
+func Last[T any](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	result, ok := itr.Next()
@@ -115,7 +115,7 @@ func LastItr[T any](src Iterator[T]) (T, bool) {
 	}
 }
 
-func LastOrDefaultItr[T any](src Iterator[T]) T {
+func LastOrDefault[T any](src Iterator[T]) T {
 	itr := src.initItr()
 
 	result, ok := itr.Next()

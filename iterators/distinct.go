@@ -31,7 +31,7 @@ func (x *iteratorDistinct[T]) initItr() itr[T] {
 	}
 }
 
-func DistinctItr[T comparable](inner Iterator[T]) Iterator[T] {
+func Distinct[T comparable](inner Iterator[T]) Iterator[T] {
 	return &iteratorDistinct[T]{
 		Inner: inner,
 	}

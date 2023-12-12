@@ -27,7 +27,7 @@ func (x *iteratorSelect[T_In, T_Out]) initItr() itr[T_Out] {
 	}
 }
 
-func SelectItr[T_In any, T_Out any](inner Iterator[T_In], selector func(T_In) T_Out) Iterator[T_Out] {
+func Select[T_In any, T_Out any](inner Iterator[T_In], selector func(T_In) T_Out) Iterator[T_Out] {
 	return &iteratorSelect[T_In, T_Out]{
 		Inner:    inner,
 		Selector: selector,

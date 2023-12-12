@@ -46,7 +46,7 @@ func (x *iteratorChunk[T]) initItr() itr[[]T] {
 	}
 }
 
-func ChunkItr[T any](inner Iterator[T], chunkSize uint32) Iterator[[]T] {
+func Chunk[T any](inner Iterator[T], chunkSize uint32) Iterator[[]T] {
 	return &iteratorChunk[T]{
 		Inner:     inner,
 		ChunkSize: chunkSize,
