@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 func Any[T any](src Enumerable[T]) bool {
 	resultChannel, cancelFunc := runAction(src)

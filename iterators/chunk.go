@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 type itrChunk[T any] struct {
 	Inner             itr[T]

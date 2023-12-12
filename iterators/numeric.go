@@ -1,6 +1,8 @@
-package golinq
+package iterators
 
-func MaxItr[T Ordered](src Iterator[T]) (T, bool) {
+import cmn "github.com/alexmacinnes/golinq/common"
+
+func MaxItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	max, ok := itr.Next()
@@ -19,7 +21,7 @@ func MaxItr[T Ordered](src Iterator[T]) (T, bool) {
 	}
 }
 
-func MinItr[T Ordered](src Iterator[T]) (T, bool) {
+func MinItr[T cmn.Ordered](src Iterator[T]) (T, bool) {
 	itr := src.initItr()
 
 	min, ok := itr.Next()
@@ -38,7 +40,7 @@ func MinItr[T Ordered](src Iterator[T]) (T, bool) {
 	}
 }
 
-func AvgItr[T Numeric](src Iterator[T]) (float64, bool) {
+func AvgItr[T cmn.Numeric](src Iterator[T]) (float64, bool) {
 	itr := src.initItr()
 
 	var total float64 = 0
@@ -59,7 +61,7 @@ func AvgItr[T Numeric](src Iterator[T]) (float64, bool) {
 	return total / float64(count), true
 }
 
-func SumItr[T Numeric](src Iterator[T]) T {
+func SumItr[T cmn.Numeric](src Iterator[T]) T {
 	itr := src.initItr()
 
 	var total T = 0

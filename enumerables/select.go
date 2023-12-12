@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 type enumerableSelect[T_In any, T_Out any] struct {
 	Prior    Enumerable[T_In]

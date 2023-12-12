@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 type itrSelect[T_In any, T_Out any] struct {
 	Inner    itr[T_In]

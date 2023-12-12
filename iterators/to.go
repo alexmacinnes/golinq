@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 func IteratorToSlice[T_Out any](src Iterator[T_Out]) []T_Out {
 	itr := src.initItr()

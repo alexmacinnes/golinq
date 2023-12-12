@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 type itr[T any] interface {
 	Next() (T, bool)

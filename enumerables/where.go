@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 type enumerableWhere[T any] struct {
 	Prior     Enumerable[T]

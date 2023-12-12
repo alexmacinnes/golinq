@@ -1,4 +1,4 @@
-package golinq
+package common
 
 //copied from https://cs.opensource.google/go/x/exp/+/master:constraints/constraints.go
 

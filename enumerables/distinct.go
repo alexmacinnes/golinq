@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 type enumerableDistinct[T comparable] struct {
 	Prior Enumerable[T]

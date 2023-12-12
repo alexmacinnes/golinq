@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 import "context"
 

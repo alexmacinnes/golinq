@@ -1,4 +1,8 @@
-package golinq
+package enumerables
+
+import (
+	"github.com/alexmacinnes/golinq/common"
+)
 
 func consumeFirst[T any](src chan T) (T, bool) {
 	for x := range src {
@@ -9,7 +13,7 @@ func consumeFirst[T any](src chan T) (T, bool) {
 	return defaultVal, false
 }
 
-func Max[T Ordered](src Enumerable[T]) (T, bool) {
+func Max[T common.Ordered](src Enumerable[T]) (T, bool) {
 	resultChannel, _ := runAction(src)
 
 	max, ok := consumeFirst(resultChannel)
@@ -26,7 +30,7 @@ func Max[T Ordered](src Enumerable[T]) (T, bool) {
 	return max, true
 }
 
-func Min[T Ordered](src Enumerable[T]) (T, bool) {
+func Min[T common.Ordered](src Enumerable[T]) (T, bool) {
 	resultChannel, _ := runAction(src)
 
 	min, ok := consumeFirst(resultChannel)
@@ -43,7 +47,7 @@ func Min[T Ordered](src Enumerable[T]) (T, bool) {
 	return min, true
 }
 
-func Avg[T Numeric](src Enumerable[T]) (float64, bool) {
+func Avg[T common.Numeric](src Enumerable[T]) (float64, bool) {
 	resultChannel, _ := runAction(src)
 
 	var total float64 = 0
@@ -60,7 +64,7 @@ func Avg[T Numeric](src Enumerable[T]) (float64, bool) {
 	return total / float64(count), true
 }
 
-func Sum[T Numeric](src Enumerable[T]) T {
+func Sum[T common.Numeric](src Enumerable[T]) T {
 	resultChannel, _ := runAction(src)
 
 	var total T = 0

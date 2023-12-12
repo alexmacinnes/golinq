@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 func EnumerableToSlice[T_Out any](src Enumerable[T_Out]) []T_Out {
 	resultChannel, _ := runAction(src)

@@ -1,4 +1,6 @@
-package golinq
+package iterators
+
+import cmn "github.com/alexmacinnes/golinq/common"
 
 //Slice to Itr
 type itrFromSlice[T any] struct {
@@ -55,31 +57,21 @@ func (x *ptrIteratorFromSlice[T]) initItr() itr[*T] {
 	}
 }
 
-//Map to Itr
-// type itrFromMap[T_Key comparable, T_Value any] struct {
-// 	Input *map[T_Key]T_Value
-// }
-
-// func (x *itrFromMap[T_Key, T_Value]) Next() (KeyValuePair[T_Key, T_Value], bool) {
-
-// 	return &iteratorFromChan[KeyValuePair[T_Key, T_Value]]{InputChannel: items}
-// }
-
 type iteratorFromMap[T_Key comparable, T_Value any] struct {
 	Input *map[T_Key]T_Value
 }
 
-func (x *iteratorFromMap[T_Key, T_Value]) initItr() itr[KeyValuePair[T_Key, T_Value]] {
-	inputChannel := make(chan KeyValuePair[T_Key, T_Value])
+func (x *iteratorFromMap[T_Key, T_Value]) initItr() itr[cmn.KeyValuePair[T_Key, T_Value]] {
+	inputChannel := make(chan cmn.KeyValuePair[T_Key, T_Value])
 
 	go func() {
 		for k, v := range *(x.Input) {
-			inputChannel <- KeyValuePair[T_Key, T_Value]{Key: k, Value: v}
+			inputChannel <- cmn.KeyValuePair[T_Key, T_Value]{Key: k, Value: v}
 		}
 		close(inputChannel)
 	}()
 
-	return &itrFromChan[KeyValuePair[T_Key, T_Value]]{
+	return &itrFromChan[cmn.KeyValuePair[T_Key, T_Value]]{
 		InputChannel: inputChannel,
 	}
 }
@@ -89,17 +81,17 @@ type ptrIteratorFromMap[T_Key comparable, T_Value any] struct {
 	Input *map[T_Key]T_Value
 }
 
-func (x *ptrIteratorFromMap[T_Key, T_Value]) initItr() itr[KeyValuePair[T_Key, *T_Value]] {
-	inputChannel := make(chan KeyValuePair[T_Key, *T_Value])
+func (x *ptrIteratorFromMap[T_Key, T_Value]) initItr() itr[cmn.KeyValuePair[T_Key, *T_Value]] {
+	inputChannel := make(chan cmn.KeyValuePair[T_Key, *T_Value])
 
 	go func() {
 		for k, v := range *(x.Input) {
-			inputChannel <- KeyValuePair[T_Key, *T_Value]{Key: k, Value: &v}
+			inputChannel <- cmn.KeyValuePair[T_Key, *T_Value]{Key: k, Value: &v}
 		}
 		close(inputChannel)
 	}()
 
-	return &itrFromChan[KeyValuePair[T_Key, *T_Value]]{
+	return &itrFromChan[cmn.KeyValuePair[T_Key, *T_Value]]{
 		InputChannel: inputChannel,
 	}
 }
@@ -127,13 +119,13 @@ func PtrIteratorFromSlice[T any](slice *[]T) Iterator[*T] {
 	}
 }
 
-func IteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[KeyValuePair[T_Key, T_Value]] {
+func IteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, T_Value]] {
 	return &iteratorFromMap[T_Key, T_Value]{
 		Input: input,
 	}
 }
 
-func PtrIteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[KeyValuePair[T_Key, *T_Value]] {
+func PtrIteratorFromMap[T_Key comparable, T_Value any](input *map[T_Key]T_Value) Iterator[cmn.KeyValuePair[T_Key, *T_Value]] {
 	return &ptrIteratorFromMap[T_Key, T_Value]{
 		Input: input,
 	}

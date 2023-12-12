@@ -1,4 +1,4 @@
-package golinq
+package enumerables
 
 type enumerableChunk[T any] struct {
 	Prior     Enumerable[T]

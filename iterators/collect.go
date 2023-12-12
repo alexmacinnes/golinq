@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 func AnyItr[T any](src Iterator[T]) bool {
 	itr := src.initItr()

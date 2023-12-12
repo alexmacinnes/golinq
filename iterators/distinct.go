@@ -1,4 +1,4 @@
-package golinq
+package iterators
 
 type itrDistinct[T comparable] struct {
 	Inner         itr[T]
